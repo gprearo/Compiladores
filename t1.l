@@ -44,24 +44,31 @@ character_erro \'.[^\']+\'*
 %{/*Definição de regras*/
 %}
 
-/*Definição de regras com rotina*/
+%{/*Definição de regras com rotina*/
+%}
 
-/*Rotina que identifica um comentário, escrito entre chaves ({}) e o erro caso as chaves não sejam fechadas*/
+%{/*Rotina que identifica um comentário, escrito entre chaves ({}) e o erro caso as chaves não sejam fechadas*/
 /*Caso "COMMENT"*/
+%}
 "{"			BEGIN(COMMENT);
-/*Ignora pulo de linha e o simbolo de fecha chaves que será tratado a seguir*/
+%{/*Ignora pulo de linha e o simbolo de fecha chaves que será tratado a seguir*/
+%}
 <COMMENT>[^}\n]+
-/*Incrementa o numero de linhas a cada nova linha*/
+%{/*Incrementa o numero de linhas a cada nova linha*/
+%}
 <COMMENT>\n		++nlines;
-/*Caso fim de arquivo, o comentário não foi fechado e dá erro de fim de arquivo em comentário*/
+%{/*Caso fim de arquivo, o comentário não foi fechado e dá erro de fim de arquivo em comentário*/
+%}
 <COMMENT><<EOF>>	yyerror("Fim do arquivo inesperado! Dentro de comentário");
-/*Caso o comentário seja terminado corretamente, volta para as regras fora do caso "COMMENT"*/
+%{/*Caso o comentário seja terminado corretamente, volta para as regras fora do caso "COMMENT"*/
+%}
 <COMMENT>"}"		BEGIN(INITIAL);
 
+%{/*Definição de regras sem rotina*/
+%}
 
-/*Definição de regras sem rotina*/
-
-/*Palavras reservadas -> cria o token correspondente*/
+%{/*Palavras reservadas -> cria o token correspondente*/
+%}
 program		{yytoken("program");}
 procedure	{yytoken("procedure");}
 var		{yytoken("var");}
@@ -77,23 +84,29 @@ integer		{yytoken("integer");}
 real		{yytoken("real");}
 char		{yytoken("char");}
 
-/*Tokens de tipos específicos -> cria o token correspondente}
+%{/*Tokens de tipos específicos -> cria o token correspondente*/
+%}
 {ident}		{yytoken("id");}
 {num_int}	{yytoken("num_int");}
 {num_real}	{yytoken("num_real");}
 {character} {yytoken("character") ;}
 
-/*Nova linha -> incrementa o numero de linhas*/
+%{/*Nova linha -> incrementa o numero de linhas*/
+%}
 {nl}		{nlines++;}
-/*Espaço em branco -> faz nada}
+
+%{/*Espaço em branco -> faz nada*/
+%}
 {ws}		{}
 
-/*Tokens de erro -> Gera a mensagem de erro correspondente*/
+%{/*Tokens de erro -> Gera a mensagem de erro correspondente*/
+%}
 {num_int_erro} {yyerror("Número inteiro inválido");}
 {num_real_erro} {yyerror("Número real inválido");}
 {character_erro} {yyerror("Caracter inválido!");}
 
-/*Tokens de símbolos -> cria o token correspondente*/
+%{/*Tokens de símbolos -> cria o token correspondente*/
+%}
 \;		{yytoken("simb_ponto_virgula");}
 \:		{yytoken("simb_dois_pontos");}
 \:=		{yytoken("simb_atribuicao");}
@@ -110,7 +123,9 @@ char		{yytoken("char");}
 "<>"		{yytoken("simb_dif");}
 ">="		{yytoken("simb_maior_igual");}
 
-/*Caractere avulso -> Gera mensagem de erro correspondente*/
+
+%{/*Caractere avulso -> Gera mensagem de erro correspondente*/
+%}
 .		{yyerror("Entrada não identificada");}
 
 %%
