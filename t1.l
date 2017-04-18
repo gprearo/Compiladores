@@ -19,7 +19,7 @@ ident		{alpha}{alpha_num}*
 num_int		{digit}+
 num_int_erro {digit}+{alpha}+{alpha_num}
 num_real	{digit}+\.{digit}+
-num_real_erro {num_int_erro}\.{alpha_num}+
+num_real_erro ({num_int_erro}\.{alpha_num}+)|({num_int}\.{num_int}*{alpha}+{alpha_num}*)
 nl		\n
 character \'.\'
 
