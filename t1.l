@@ -41,7 +41,8 @@ character \'.\'
 character_erro \'.[^\']+\'*
 
 %%
-/*Definição de regras*/
+%{/*Definição de regras*/
+%}
 
 /*Definição de regras com rotina*/
 
@@ -110,7 +111,7 @@ char		{yytoken("char");}
 ">="		{yytoken("simb_maior_igual");}
 
 /*Caractere avulso -> Gera mensagem de erro correspondente*/
-.		{yytoken("Entrada não identificada");}
+.		{yyerror("Entrada não identificada");}
 
 %%
 /*Código em C*/
