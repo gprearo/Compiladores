@@ -142,7 +142,6 @@ void yytoken(char *token) {
    printf("%s - %s\n", yytext, token);
 }
 
-/*C
 int main()
 {
 	yylex();

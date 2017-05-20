@@ -389,14 +389,14 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[101] =
     {   0,
-       21,   21,    0,    0,   43,   41,   21,   20,   41,   34,
+       22,   22,    0,    0,   43,   41,   22,   21,   41,   34,
        35,   31,   30,   36,   29,   33,   32,   18,   27,   26,
        38,   37,   17,   17,   17,   17,   17,   17,   17,   17,
-       17,    1,    2,    3,    4,   21,    0,    0,   18,   22,
+       17,    1,    2,    3,    4,   22,    0,    0,   18,   23,
        28,   39,   40,   17,   17,   17,   17,   17,   17,   11,
-       17,   17,   17,   17,   17,    2,   25,   24,   19,   23,
-       23,   22,   22,   17,   17,   17,   17,   10,   17,   17,
-       17,   17,    7,   25,   23,   23,   23,   17,   16,   17,
+       17,   17,   17,   17,   17,    2,   25,   20,   19,   24,
+       24,   23,   23,   17,   17,   17,   17,   10,   17,   17,
+       17,   17,    7,   25,   24,   24,   24,   17,   16,   17,
        13,   17,   17,   17,   15,   12,    9,    8,   17,   17,
        17,   17,   17,   17,   14,   17,    5,   17,    6,    0
 
@@ -539,12 +539,27 @@ char *yytext;
 #line 1 "t1.l"
 #line 3 "t1.l"
 	#include<stdio.h>
-#line 7 "t1.l"
-	void yyerror(char *message);
-	void yytoken(char *token);
-	int nlines;
+/*Declarações*/
+#line 8 "t1.l"
+	void yyerror(char *message); //Cabeçalho função de erro
+	void yytoken(char *token); //Cabeçalho função de token
+	int nlines; //Contador de linhas para indicar onde ocorreu um erro
+/*Vai para o espaço de definição das regras do caso "COMMENT" */
  
-#line 548 "lex.yy.c"
+/*Definição dos tokens de tipos*/
+/*Espaço em branco: tabulação e espaço*/
+/*Dígito numérico de 0 a 9*/
+/*Letra do alfabeto maiúsculo ou minúsculo*/
+/*Cadeia de letras e números*/
+/*Identificador, iniciado com uma letra, e seguido por uma cadeia de letras e/ou números*/
+/*Numero inteiro*/
+/*Número inteiro com erro de escrita*/
+/*Número real*/
+/*Número real com erro de escrita*/
+/*Nova linha*/
+/*Tipo character (char), composto por um caractere qualquer (.) entre apóstrofes ('')*/
+/*Tipo character (char) com erro de escrita*/
+#line 563 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -763,11 +778,18 @@ YY_DECL
 		}
 
 	{
-#line 28 "t1.l"
+#line 43 "t1.l"
+
+/*Definição de regras*/
 
 
+/*Definição de regras com rotina*/
 
-#line 771 "lex.yy.c"
+
+/*Rotina que identifica um comentário, escrito entre chaves ({}) e o erro caso as chaves não sejam fechadas*/
+/*Caso "COMMENT"*/
+
+#line 793 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -826,222 +848,246 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 31 "t1.l"
+#line 53 "t1.l"
 BEGIN(COMMENT);
 	YY_BREAK
+/*Ignora pulo de linha e o simbolo de fecha chaves que será tratado a seguir*/
+
 case 2:
 YY_RULE_SETUP
-#line 32 "t1.l"
+#line 56 "t1.l"
 
 	YY_BREAK
+/*Incrementa o numero de linhas a cada nova linha*/
+
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 33 "t1.l"
+#line 59 "t1.l"
 ++nlines;
 	YY_BREAK
+/*Caso fim de arquivo, o comentário não foi fechado e dá erro de fim de arquivo em comentário*/
+
 case YY_STATE_EOF(COMMENT):
-#line 34 "t1.l"
+#line 62 "t1.l"
 yyerror("Fim do arquivo inesperado! Dentro de comentário");
 	YY_BREAK
+/*Caso o comentário seja terminado corretamente, volta para as regras fora do caso "COMMENT"*/
+
 case 4:
 YY_RULE_SETUP
-#line 35 "t1.l"
+#line 65 "t1.l"
 BEGIN(INITIAL);
 	YY_BREAK
+/*Definição de regras sem rotina*/
+
+/*Palavras reservadas -> cria o token correspondente*/
+
 case 5:
 YY_RULE_SETUP
-#line 39 "t1.l"
+#line 72 "t1.l"
 {yytoken("program");}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 40 "t1.l"
+#line 73 "t1.l"
 {yytoken("procedure");}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 41 "t1.l"
+#line 74 "t1.l"
 {yytoken("var");}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 42 "t1.l"
+#line 75 "t1.l"
 {yytoken("const");}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 44 "t1.l"
+#line 77 "t1.l"
 {yytoken("begin");}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 45 "t1.l"
+#line 78 "t1.l"
 {yytoken("end");}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 46 "t1.l"
+#line 79 "t1.l"
 {yytoken("if");}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 47 "t1.l"
+#line 80 "t1.l"
 {yytoken("then");}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 48 "t1.l"
+#line 81 "t1.l"
 {yytoken("else");}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 51 "t1.l"
+#line 83 "t1.l"
 {yytoken("integer");}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 52 "t1.l"
+#line 84 "t1.l"
 {yytoken("real");}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 53 "t1.l"
+#line 85 "t1.l"
 {yytoken("char");}
 	YY_BREAK
+/*Tokens de tipos específicos -> cria o token correspondente*/
+
 case 17:
 YY_RULE_SETUP
-#line 55 "t1.l"
+#line 89 "t1.l"
 {yytoken("id");}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 56 "t1.l"
+#line 90 "t1.l"
 {yytoken("num_int");}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 57 "t1.l"
+#line 91 "t1.l"
 {yytoken("num_real");}
 	YY_BREAK
 case 20:
-/* rule 20 can match eol */
 YY_RULE_SETUP
-#line 58 "t1.l"
+#line 92 "t1.l"
+{yytoken("character") ;}
+	YY_BREAK
+/*Nova linha -> incrementa o numero de linhas*/
+
+case 21:
+/* rule 21 can match eol */
+YY_RULE_SETUP
+#line 96 "t1.l"
 {nlines++;}
 	YY_BREAK
-case 21:
-YY_RULE_SETUP
-#line 59 "t1.l"
-{}
-	YY_BREAK
+/*Espaço em branco -> faz nada*/
+
 case 22:
 YY_RULE_SETUP
-#line 61 "t1.l"
-{yyerror("Número inteiro inválido");}
+#line 100 "t1.l"
+{}
 	YY_BREAK
+/*Tokens de erro -> Gera a mensagem de erro correspondente*/
+
 case 23:
 YY_RULE_SETUP
-#line 62 "t1.l"
-{yyerror("Número real inválido");}
+#line 104 "t1.l"
+{yyerror("Número inteiro inválido");}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 64 "t1.l"
-{yytoken("character") ;}
+#line 105 "t1.l"
+{yyerror("Número real inválido");}
 	YY_BREAK
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 65 "t1.l"
-{yyerror("Caracter inválido!"); }
+#line 106 "t1.l"
+{yyerror("Caracter inválido!");}
 	YY_BREAK
+/*Tokens de símbolos -> cria o token correspondente*/
+
 case 26:
 YY_RULE_SETUP
-#line 67 "t1.l"
+#line 110 "t1.l"
 {yytoken("simb_ponto_virgula");}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 68 "t1.l"
+#line 111 "t1.l"
 {yytoken("simb_dois_pontos");}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 69 "t1.l"
+#line 112 "t1.l"
 {yytoken("simb_atribuicao");}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 70 "t1.l"
+#line 113 "t1.l"
 {yytoken("simb_menos");}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 71 "t1.l"
+#line 114 "t1.l"
 {yytoken("simb_mais");}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 72 "t1.l"
+#line 115 "t1.l"
 {yytoken("simb_vezes");}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 73 "t1.l"
+#line 116 "t1.l"
 {yytoken("simb_divisao");}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 74 "t1.l"
+#line 117 "t1.l"
 {yytoken("simb_ponto");}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 75 "t1.l"
+#line 118 "t1.l"
 {yytoken("simb_abre_parentese");}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 76 "t1.l"
+#line 119 "t1.l"
 {yytoken("simb_fecha_parentese");}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 77 "t1.l"
+#line 120 "t1.l"
 {yytoken("simb_virgula");}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 78 "t1.l"
+#line 121 "t1.l"
 {yytoken("simb_maior");}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 79 "t1.l"
+#line 122 "t1.l"
 {yytoken("simb_menor");}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 80 "t1.l"
+#line 123 "t1.l"
 {yytoken("simb_dif");}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 81 "t1.l"
+#line 124 "t1.l"
 {yytoken("simb_maior_igual");}
 	YY_BREAK
+/*Caractere avulso -> Gera mensagem de erro correspondente*/
+
 case 41:
 YY_RULE_SETUP
-#line 84 "t1.l"
-{yytoken("Entrada não identificada");}
+#line 129 "t1.l"
+{yyerror("Entrada não identificada");}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 86 "t1.l"
+#line 131 "t1.l"
 ECHO;
 	YY_BREAK
-#line 1045 "lex.yy.c"
+#line 1091 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2042,19 +2088,21 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 86 "t1.l"
+#line 131 "t1.l"
 
 
+/*Código em C*/
 
+/*Função que gera mensagem de erro*/
 void yyerror(char *message)
 {
    printf("Erro: \"%s\" na linha %d. Token = %s\n", message, nlines, yytext);
 }
 
+/*Função que gera o token correspondente*/
 void yytoken(char *token) {
    printf("%s - %s\n", yytext, token);
 }
-
 
 int main()
 {

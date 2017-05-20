@@ -1,0 +1,27 @@
+program - program
+lalg - id
+; - simb_ponto_virgula
+var - var
+a - id
+: - simb_dois_pontos
+integer - integer
+; - simb_ponto_virgula
+begin - begin
+readd - id
+( - simb_abre_parentese
+a - id
+, - simb_virgula
+Erro: "Entrada não identificada" na linha 4. Token = @
+, - simb_virgula
+1 - num_int
+) - simb_fecha_parentese
+; - simb_ponto_virgula
+Erro: "Número real inválido" na linha 5. Token = 4a.44
+Erro: "Número real inválido" na linha 6. Token = 44.4a
+5 - num_int
+56.4 - num_real
+end - end
+. - simb_ponto
+Erro: "Caracter inválido!" na linha 10. Token = 'a
+
+

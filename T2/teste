@@ -1,0 +1,9 @@
+program lalg;
+{entrada}
+var a: integer;
+begin
+readd(a, @, 1);
+44.4a
+44.44
+end.
+
