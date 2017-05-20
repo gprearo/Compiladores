@@ -48,7 +48,8 @@
 
 	%token PROGRAM 
 	%token PROCEDURE
-	%token VAR 262define CONST 263
+	%token VAR 262
+	%token CONST 263
 	%token BEGIN
 	%token END
 	%token IF
@@ -58,7 +59,7 @@
 	%token REAL
 	%token CHAR
 	%token ID
-	%token NUM_INT
+	%token NUM_INTEGER
 	%token NUM_REAL
 	%token INVALID_NUM_INT
 	%token INVALID_NUM_REAL
