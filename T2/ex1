@@ -1,0 +1,7 @@
+program lalg;
+const b = 4:
+var a: integer;
+begin
+a:='b';
+read(a);
+write(a,b);

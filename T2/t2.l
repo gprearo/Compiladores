@@ -1,50 +1,10 @@
-%option noyywrap
-%{
-	#include<stdio.h>
-	#define PROGRAM 260
-	#define PROCEDURE 261
-	#define VAR 262 
-	#define CONST 263
-	#define BEGIN 264
-	#define END 265
-	#define IF 266
-	#define THEN 267
-	#define ELSE 268
-	#define INTEGER 269
-	#define REAL 270
-	#define CHAR 271
-	#define ID 272
-	#define NUM_INT 273
-	#define NUM_REAL 274
-	#define INVALID_NUM_INT 275
-	#define INVALID_NUM_REAL 276
-	#define INVALID_CHAR 277
-	#define SIMB_SEMI_COLON 278
-	#define SIMB_COLON 279
-	#define SIMB_ATRIBUTION 280
-	#define SIMB_MINUS 281
-	#define SIMB_PLUS 282
-	#define SIMB_MUL 283
-	#define SIMB_DIV 284
-	#define SIMB_DOT 285
-	#define SIMB_OPEN_PARENTESIS 286
-	#define SIMB_CLOSE_PARENTESIS 287
-	#define SIMB_COMMA 288
-	#define SIMB_LESS 289
-	#define SIMB_GREATER 290
-	#define SIMB_DIF 291
-	#define SIMB_GREATER_EQUAL 292
-	#define ERROR 293
-	#define CHARACTER 294
-	#define SIMB_EQUAL 295
-
-%}
-
 /*Declarações*/
 %{
-	void yyerror(char *message); //Cabeçalho função de erro
+	#include "y.tab.h"
+
+	int yyerror(char *s);
 	void yytoken(char *token); //Cabeçalho função de token
-	int nlines; //Contador de linhas para indicar onde ocorreu um erro
+	int nlines = 1; //Contador de linhas para indicar onde ocorreu um erro
 %}
 
 /*Vai para o espaço de definição das regras do caso "COMMENT" */
@@ -84,14 +44,14 @@ character_erro \'.[^\']+\'*
 %{/*Definição de regras com rotina*/
 %}
 
-%{/*Rotina que identifica um comentário, escrito entre chaves ({}) e o erro caso as chaves não sejam fechadas*/
+%{
 /*Caso "COMMENT"*/
 %}
-"{"			BEGIN(COMMENT);
+"{"			{printf("comentario\n"); BEGIN(COMMENT) ; }
 %{/*Ignora pulo de linha e o simbolo de fecha chaves que será tratado a seguir*/
 %}
 <COMMENT>[^}\n]+
-%{/*Incrementa o numero de linhas a cada nova linha*/
+%{
 %}
 <COMMENT>\n		++nlines;
 %{/*Caso fim de arquivo, o comentário não foi fechado e dá erro de fim de arquivo em comentário*/
@@ -99,7 +59,7 @@ character_erro \'.[^\']+\'*
 <COMMENT><<EOF>>	yyerror("Fim do arquivo inesperado! Dentro de comentário");
 %{/*Caso o comentário seja terminado corretamente, volta para as regras fora do caso "COMMENT"*/
 %}
-<COMMENT>"}"		BEGIN(INITIAL);
+<COMMENT>"}"	{	BEGIN(INITIAL);}
 
 %{/*Definição de regras sem rotina*/
 %}
@@ -111,11 +71,13 @@ procedure	{return PROCEDURE;}
 var		{return VAR;}
 const		{return CONST;}
 
-begin		{return BEGIN;}
+begin		{return SIMB_BEGIN;}
 end		{return END;}
 if		{return IF;}
 then		{return THEN;}
 else		{return ELSE;}
+read		{return READ;}
+write		{return WRITE;}
 
 integer		{return INTEGER;}
 real		{return REAL;}
@@ -124,9 +86,9 @@ char		{return CHAR;}
 %{/*Tokens de tipos específicos -> cria o token correspondente*/
 %}
 {ident}		{return ID;}
-{num_int}	{return NUM_INT;}
+{num_int}	{return NUM_INTEGER;}
 {num_real}	{return NUM_REAL;}
-{character} {return CHAR;}
+{character} {return CHARACTER;}
 
 %{/*Nova linha -> incrementa o numero de linhas*/
 %}
@@ -138,9 +100,9 @@ char		{return CHAR;}
 
 %{/*Tokens de erro -> Gera a mensagem de erro correspondente*/
 %}
-{num_int_erro} {yyerror("Número inteiro inválido");}
-{num_real_erro} {yyerror("Número real inválido");}
-{character_erro} {yyerror("Caracter inválido!");}
+{num_int_erro} {printf("Erro léxico: Número inteiro inválido na linha %d\n", nlines);}
+{num_real_erro} {printf("Erro léxico: Número real inválido na linha %d\n", nlines);}
+{character_erro} {printf("Erro léxico: Caracter inválido na linha %d\n", nlines);}
 
 %{/*Tokens de símbolos -> cria o token correspondente*/
 %}
@@ -159,7 +121,7 @@ char		{return CHAR;}
 "<"		{return SIMB_LESS;}
 "<>"		{return SIMB_DIF;}
 ">="		{return SIMB_GREATER_EQUAL;}
-\=		{return SIMB_EQUAL}
+\=		{return SIMB_EQUAL;}
 
 
 %{/*Caractere avulso -> Gera mensagem de erro correspondente*/
@@ -169,19 +131,9 @@ char		{return CHAR;}
 %%
 /*Código em C*/
 
-/*Função que gera mensagem de erro*/
-void yyerror(char *message)
-{
-   printf("Erro: \"%s\" na linha %d. Token = %s\n", message, nlines, yytext);
-}
 
 /*Função que gera o token correspondente*/
 void yytoken(char *token) {
    printf("%s - %s\n", yytext, token);
 }
 
-int main()
-{
-	yylex();
-	return 0;
-}

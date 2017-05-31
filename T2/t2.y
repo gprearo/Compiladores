@@ -1,43 +1,10 @@
 
+
 %{
-#define PROGRAM 260
-#define PROCEDURE 261
-#define VAR 262 
-#define CONST 263
-#define BEGIN 264
-#define END 265
-#define IF 266
-#define THEN 267
-#define ELSE 268
-#define INTEGER 269
-#define REAL 270
-#define CHAR 271
-#define ID 272
-#define NUM_INT 273
-#define NUM_REAL 274
-#define INVALID_NUM_INT 275
-#define INVALID_NUM_REAL 276
-#define INVALID_CHAR 277
-#define SIMB_SEMI_COLON 278
-#define SIMB_COLON 279
-#define SIMB_ATRIBUTION 280
-#define SIMB_MINUS 281
-#define SIMB_PLUS 282
-#define SIMB_MUL 283
-#define SIMB_DIV 284
-#define SIMB_DOT 285
-#define SIMB_OPEN_PARENTESIS 286
-#define SIMB_CLOSE_PARENTESIS 287
-#define SIMB_COMMA 288
-#define SIMB_LESS 289
-#define SIMB_GREATER 290
-#define SIMB_DIF 291
-#define SIMB_GREATER_EQUAL 292
-#define ERROR 293
-#define CHARACTER 294
-#define SIMB_EQUAL 295
+#include <stdio.h>
+	extern int nlines ;
 
-
+	int yyerror(char *s) ;
 	int yyparse(void);
 	int yylex(void);  
 	int yywrap()
@@ -48,9 +15,9 @@
 
 	%token PROGRAM 
 	%token PROCEDURE
-	%token VAR 262
-	%token CONST 263
-	%token BEGIN
+	%token VAR
+	%token CONST
+	%token SIMB_BEGIN
 	%token END
 	%token IF
 	%token THEN
@@ -82,21 +49,29 @@
 	%token ERROR
 	%token CHARACTER
 	%token SIMB_EQUAL
+	%token READ
+	%token WRITE
 
 
 %%
 
-programa: PROGRAM ID SIMB_SEMI_COLON corpo SIMB_DOT {return ;} ;
+programa: PROGRAM ID SIMB_SEMI_COLON corpo SIMB_DOT {printf("programa\n") ;return 0;}
+			|PROGRAM ID SIMB_SEMI_COLON corpo  {printf("Linha %d: Erro Sintático: Esperado ponto final.\n", nlines);} ; 
 
-corpo:	dc BEGIN comandos END ;
+corpo:	dc SIMB_BEGIN comandos END {printf("corpo\n") ;} 
+		| dc SIMB_BEGIN comandos {printf("Linha %d: Erro Sintático: Esperado END.\n", nlines);};
 
-dc:	dc_c dc_v dc_p ;
+dc:	dc_c dc_v dc_p {printf("dc\n") ;};
 
-dc_c: CONST ID SIMB_ATRIBUTION numero SIMB_SEMI_COLON dc_c
-	  | ;
+dc_c: CONST ID SIMB_EQUAL numero SIMB_SEMI_COLON dc_c
+	  | 
+	  | CONST ID SIMB_EQUAL numero SIMB_COLON dc_c   {printf("Linha: %d: Erro sintático: Esperado ponto e vírgula \";\".\n", nlines);} ;
 
 dc_v: VAR variaveis SIMB_COLON tipo_var SIMB_SEMI_COLON dc_v
-	  | ;
+	  | 
+	  | VAR variaveis SIMB_SEMI_COLON tipo_var SIMB_SEMI_COLON dc_v {printf("Linha: %d: Erro sintático: Esperado dois pontos \":\".\n", nlines);} 
+	  | VAR variaveis SIMB_SEMI_COLON tipo_var SIMB_COLON dc_v {printf("Linha: %d: Erro sintático: Esperado dois pontos \":\" e ponto e vírgula \";\".\n", nlines);} 
+	  | VAR variaveis SIMB_COLON tipo_var SIMB_COLON dc_v {printf("Linha: %d: Erro sintático: Esperado ponto e vírgula \";\".\n", nlines);} ;
 
 tipo_var:	REAL
 			| INTEGER
@@ -116,30 +91,35 @@ parametros:	SIMB_OPEN_PARENTESIS lista_par SIMB_CLOSE_PARENTESIS
 lista_par:	variaveis SIMB_COLON tipo_var  mais_par ;
 
 mais_par:	SIMB_SEMI_COLON lista_par 
-			| ;
+			| 
+			| SIMB_COMMA lista_par {printf("Linha: %d: Erro sintário: Esperavamos por pronto e virgula \";\".\n", nlines);} ;
 
-corpo_p:	dc_loc BEGIN comandos END SIMB_SEMI_COLON ;
+corpo_p:	dc_loc SIMB_BEGIN comandos END SIMB_SEMI_COLON ;
 
 dc_loc:		dc_v ;
 
-lista_arg:	SIMB_OPEN_PARENTESIS argumentos SIMB_CLOSE_PARENTESIS 
+lista_arg:	SIMB_OPEN_PARENTESIS argumentos SIMB_CLOSE_PARENTESIS {printf("lista\n") ;}
 			| ;
 
-argumentos:	ID mais_id ;
+argumentos:	ID mais_id {printf("arg\n") ;};
 
-mais_id:	SIMB_SEMI_COLON argumentos 
+mais_id:	SIMB_SEMI_COLON argumentos {printf("+\n") ;}
 			| ;
 
 pfalsa:		ELSE cmd 
 			| ;
 
-comandos:	cmd SIMB_SEMI_COLON comandos 
-			| ;
+comandos:	cmd SIMB_SEMI_COLON comandos {printf("comandos\n") ;}
+			|
+			| cmd comandos {printf("Linha %d: Erro Sintático: Esperado ponto e vígula \";\".\n", nlines); }
+			| cmd SIMB_COMMA comandos {printf("Linha %d: Erro Sintático: Esperado ponto e vígula \";\".\n", nlines); };
 
-cmd:		ID lista_arg 
+cmd:		ID lista_arg {printf("ID lista\n") ;}
 			| IF condicao THEN cmd pfalsa
-			| ID SIMB_ATRIBUTION expressao
-			| BEGIN comandos END ;
+			| ID SIMB_ATRIBUTION expressao 
+			| ID SIMB_ATRIBUTION CHARACTER 
+			| READ SIMB_OPEN_PARENTESIS variaveis SIMB_CLOSE_PARENTESIS 
+			| WRITE SIMB_OPEN_PARENTESIS variaveis SIMB_CLOSE_PARENTESIS ;
 
 condicao:	expressao relacao expressao ;
 
@@ -171,7 +151,20 @@ op_mul:		SIMB_MUL
 
 fator:		ID 
 			| numero
-			| SIMB_OPEN_PARENTESIS expressao SIMB_CLOSE_PARENTESIS ;
+			| SIMB_OPEN_PARENTESIS expressao SIMB_CLOSE_PARENTESIS 
+			| error SIMB_OPEN_PARENTESIS expressao {printf("Linha %d: Erro sintático: Esperado fechamento de parenteses.\n", nlines);} ;
 
 numero:		NUM_INTEGER 
 			| NUM_REAL ;
+
+
+
+%%
+
+int main() {
+	return yyparse() ;
+}
+
+int yyerror(char *s) {
+	fprintf(stdout, "%s\n", s) ;
+}

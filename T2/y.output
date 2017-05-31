@@ -1,0 +1,1274 @@
+Terminals unused in grammar
+
+   INVALID_NUM_INT
+   INVALID_NUM_REAL
+   INVALID_CHAR
+   ERROR
+   READ
+   WRITE
+
+
+State 33 conflicts: 2 shift/reduce
+State 56 conflicts: 2 shift/reduce
+State 75 conflicts: 1 shift/reduce
+State 83 conflicts: 2 shift/reduce
+State 95 conflicts: 2 shift/reduce
+
+
+Grammar
+
+    0 $accept: programa $end
+
+    1 programa: PROGRAM ID SIMB_SEMI_COLON corpo SIMB_DOT
+
+    2 corpo: dc SIMB_BEGIN comandos END
+
+    3 dc: dc_c dc_v dc_p
+
+    4 dc_c: CONST ID SIMB_ATRIBUTION numero SIMB_SEMI_COLON dc_c
+    5     | %empty
+
+    6 dc_v: VAR variaveis SIMB_COLON tipo_var SIMB_SEMI_COLON dc_v
+    7     | %empty
+
+    8 tipo_var: REAL
+    9         | INTEGER
+   10         | CHAR
+
+   11 variaveis: ID mais_var
+
+   12 mais_var: SIMB_COMMA variaveis
+   13         | %empty
+
+   14 dc_p: PROCEDURE ID parametros SIMB_SEMI_COLON corpo_p dc_p
+   15     | %empty
+
+   16 parametros: SIMB_OPEN_PARENTESIS lista_par SIMB_CLOSE_PARENTESIS
+   17           | %empty
+
+   18 lista_par: variaveis SIMB_COLON tipo_var mais_par
+
+   19 mais_par: SIMB_SEMI_COLON lista_par
+   20         | %empty
+   21         | SIMB_COMMA lista_par
+
+   22 corpo_p: dc_loc SIMB_BEGIN comandos END SIMB_SEMI_COLON
+
+   23 dc_loc: dc_v
+
+   24 lista_arg: SIMB_OPEN_PARENTESIS argumentos SIMB_CLOSE_PARENTESIS
+   25          | %empty
+
+   26 argumentos: ID mais_id
+
+   27 mais_id: SIMB_SEMI_COLON argumentos
+   28        | %empty
+
+   29 pfalsa: ELSE cmd
+   30       | %empty
+
+   31 comandos: cmd SIMB_SEMI_COLON comandos
+   32         | %empty
+   33         | cmd comandos
+   34         | cmd SIMB_COMMA comandos
+
+   35 cmd: ID lista_arg
+   36    | IF condicao THEN cmd pfalsa
+   37    | ID SIMB_ATRIBUTION expressao
+
+   38 condicao: expressao relacao expressao
+
+   39 relacao: SIMB_EQUAL
+   40        | SIMB_GREATER
+   41        | SIMB_DIF
+   42        | SIMB_LESS
+   43        | SIMB_GREATER_EQUAL
+
+   44 expressao: termo outros_termos
+   45          | CHARACTER
+
+   46 op_un: SIMB_PLUS
+   47      | SIMB_MINUS
+   48      | %empty
+
+   49 outros_termos: op_ad termo outros_termos
+   50              | %empty
+
+   51 op_ad: SIMB_PLUS
+   52      | SIMB_MINUS
+
+   53 termo: op_un fator mais_fatores
+
+   54 mais_fatores: op_mul fator mais_fatores
+   55             | %empty
+
+   56 op_mul: SIMB_MUL
+   57       | SIMB_DIV
+
+   58 fator: ID
+   59      | numero
+   60      | SIMB_OPEN_PARENTESIS expressao SIMB_CLOSE_PARENTESIS
+   61      | error SIMB_OPEN_PARENTESIS expressao
+
+   62 numero: NUM_INTEGER
+   63       | NUM_REAL
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256) 61
+PROGRAM (258) 1
+PROCEDURE (259) 14
+VAR (260) 6
+CONST (261) 4
+SIMB_BEGIN (262) 2 22
+END (263) 2 22
+IF (264) 36
+THEN (265) 36
+ELSE (266) 29
+INTEGER (267) 9
+REAL (268) 8
+CHAR (269) 10
+ID (270) 1 4 11 14 26 35 37 58
+NUM_INTEGER (271) 62
+NUM_REAL (272) 63
+INVALID_NUM_INT (273)
+INVALID_NUM_REAL (274)
+INVALID_CHAR (275)
+SIMB_SEMI_COLON (276) 1 4 6 14 19 22 27 31
+SIMB_COLON (277) 6 18
+SIMB_ATRIBUTION (278) 4 37
+SIMB_MINUS (279) 47 52
+SIMB_PLUS (280) 46 51
+SIMB_MUL (281) 56
+SIMB_DIV (282) 57
+SIMB_DOT (283) 1
+SIMB_OPEN_PARENTESIS (284) 16 24 60 61
+SIMB_CLOSE_PARENTESIS (285) 16 24 60
+SIMB_COMMA (286) 12 21 34
+SIMB_LESS (287) 42
+SIMB_GREATER (288) 40
+SIMB_DIF (289) 41
+SIMB_GREATER_EQUAL (290) 43
+ERROR (291)
+CHARACTER (292) 45
+SIMB_EQUAL (293) 39
+READ (294)
+WRITE (295)
+
+
+Nonterminals, with rules where they appear
+
+$accept (41)
+    on left: 0
+programa (42)
+    on left: 1, on right: 0
+corpo (43)
+    on left: 2, on right: 1
+dc (44)
+    on left: 3, on right: 2
+dc_c (45)
+    on left: 4 5, on right: 3 4
+dc_v (46)
+    on left: 6 7, on right: 3 6 23
+tipo_var (47)
+    on left: 8 9 10, on right: 6 18
+variaveis (48)
+    on left: 11, on right: 6 12 18
+mais_var (49)
+    on left: 12 13, on right: 11
+dc_p (50)
+    on left: 14 15, on right: 3 14
+parametros (51)
+    on left: 16 17, on right: 14
+lista_par (52)
+    on left: 18, on right: 16 19 21
+mais_par (53)
+    on left: 19 20 21, on right: 18
+corpo_p (54)
+    on left: 22, on right: 14
+dc_loc (55)
+    on left: 23, on right: 22
+lista_arg (56)
+    on left: 24 25, on right: 35
+argumentos (57)
+    on left: 26, on right: 24 27
+mais_id (58)
+    on left: 27 28, on right: 26
+pfalsa (59)
+    on left: 29 30, on right: 36
+comandos (60)
+    on left: 31 32 33 34, on right: 2 22 31 33 34
+cmd (61)
+    on left: 35 36 37, on right: 29 31 33 34 36
+condicao (62)
+    on left: 38, on right: 36
+relacao (63)
+    on left: 39 40 41 42 43, on right: 38
+expressao (64)
+    on left: 44 45, on right: 37 38 60 61
+op_un (65)
+    on left: 46 47 48, on right: 53
+outros_termos (66)
+    on left: 49 50, on right: 44 49
+op_ad (67)
+    on left: 51 52, on right: 49
+termo (68)
+    on left: 53, on right: 44 49
+mais_fatores (69)
+    on left: 54 55, on right: 53 54
+op_mul (70)
+    on left: 56 57, on right: 54
+fator (71)
+    on left: 58 59 60 61, on right: 53 54
+numero (72)
+    on left: 62 63, on right: 4 59
+
+
+State 0
+
+    0 $accept: . programa $end
+
+    PROGRAM  shift, and go to state 1
+
+    programa  go to state 2
+
+
+State 1
+
+    1 programa: PROGRAM . ID SIMB_SEMI_COLON corpo SIMB_DOT
+
+    ID  shift, and go to state 3
+
+
+State 2
+
+    0 $accept: programa . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    1 programa: PROGRAM ID . SIMB_SEMI_COLON corpo SIMB_DOT
+
+    SIMB_SEMI_COLON  shift, and go to state 5
+
+
+State 4
+
+    0 $accept: programa $end .
+
+    $default  accept
+
+
+State 5
+
+    1 programa: PROGRAM ID SIMB_SEMI_COLON . corpo SIMB_DOT
+
+    CONST  shift, and go to state 6
+
+    $default  reduce using rule 5 (dc_c)
+
+    corpo  go to state 7
+    dc     go to state 8
+    dc_c   go to state 9
+
+
+State 6
+
+    4 dc_c: CONST . ID SIMB_ATRIBUTION numero SIMB_SEMI_COLON dc_c
+
+    ID  shift, and go to state 10
+
+
+State 7
+
+    1 programa: PROGRAM ID SIMB_SEMI_COLON corpo . SIMB_DOT
+
+    SIMB_DOT  shift, and go to state 11
+
+
+State 8
+
+    2 corpo: dc . SIMB_BEGIN comandos END
+
+    SIMB_BEGIN  shift, and go to state 12
+
+
+State 9
+
+    3 dc: dc_c . dc_v dc_p
+
+    VAR  shift, and go to state 13
+
+    $default  reduce using rule 7 (dc_v)
+
+    dc_v  go to state 14
+
+
+State 10
+
+    4 dc_c: CONST ID . SIMB_ATRIBUTION numero SIMB_SEMI_COLON dc_c
+
+    SIMB_ATRIBUTION  shift, and go to state 15
+
+
+State 11
+
+    1 programa: PROGRAM ID SIMB_SEMI_COLON corpo SIMB_DOT .
+
+    $default  reduce using rule 1 (programa)
+
+
+State 12
+
+    2 corpo: dc SIMB_BEGIN . comandos END
+
+    IF  shift, and go to state 16
+    ID  shift, and go to state 17
+
+    $default  reduce using rule 32 (comandos)
+
+    comandos  go to state 18
+    cmd       go to state 19
+
+
+State 13
+
+    6 dc_v: VAR . variaveis SIMB_COLON tipo_var SIMB_SEMI_COLON dc_v
+
+    ID  shift, and go to state 20
+
+    variaveis  go to state 21
+
+
+State 14
+
+    3 dc: dc_c dc_v . dc_p
+
+    PROCEDURE  shift, and go to state 22
+
+    $default  reduce using rule 15 (dc_p)
+
+    dc_p  go to state 23
+
+
+State 15
+
+    4 dc_c: CONST ID SIMB_ATRIBUTION . numero SIMB_SEMI_COLON dc_c
+
+    NUM_INTEGER  shift, and go to state 24
+    NUM_REAL     shift, and go to state 25
+
+    numero  go to state 26
+
+
+State 16
+
+   36 cmd: IF . condicao THEN cmd pfalsa
+
+    SIMB_MINUS  shift, and go to state 27
+    SIMB_PLUS   shift, and go to state 28
+    CHARACTER   shift, and go to state 29
+
+    $default  reduce using rule 48 (op_un)
+
+    condicao   go to state 30
+    expressao  go to state 31
+    op_un      go to state 32
+    termo      go to state 33
+
+
+State 17
+
+   35 cmd: ID . lista_arg
+   37    | ID . SIMB_ATRIBUTION expressao
+
+    SIMB_ATRIBUTION       shift, and go to state 34
+    SIMB_OPEN_PARENTESIS  shift, and go to state 35
+
+    $default  reduce using rule 25 (lista_arg)
+
+    lista_arg  go to state 36
+
+
+State 18
+
+    2 corpo: dc SIMB_BEGIN comandos . END
+
+    END  shift, and go to state 37
+
+
+State 19
+
+   31 comandos: cmd . SIMB_SEMI_COLON comandos
+   33         | cmd . comandos
+   34         | cmd . SIMB_COMMA comandos
+
+    IF               shift, and go to state 16
+    ID               shift, and go to state 17
+    SIMB_SEMI_COLON  shift, and go to state 38
+    SIMB_COMMA       shift, and go to state 39
+
+    $default  reduce using rule 32 (comandos)
+
+    comandos  go to state 40
+    cmd       go to state 19
+
+
+State 20
+
+   11 variaveis: ID . mais_var
+
+    SIMB_COMMA  shift, and go to state 41
+
+    $default  reduce using rule 13 (mais_var)
+
+    mais_var  go to state 42
+
+
+State 21
+
+    6 dc_v: VAR variaveis . SIMB_COLON tipo_var SIMB_SEMI_COLON dc_v
+
+    SIMB_COLON  shift, and go to state 43
+
+
+State 22
+
+   14 dc_p: PROCEDURE . ID parametros SIMB_SEMI_COLON corpo_p dc_p
+
+    ID  shift, and go to state 44
+
+
+State 23
+
+    3 dc: dc_c dc_v dc_p .
+
+    $default  reduce using rule 3 (dc)
+
+
+State 24
+
+   62 numero: NUM_INTEGER .
+
+    $default  reduce using rule 62 (numero)
+
+
+State 25
+
+   63 numero: NUM_REAL .
+
+    $default  reduce using rule 63 (numero)
+
+
+State 26
+
+    4 dc_c: CONST ID SIMB_ATRIBUTION numero . SIMB_SEMI_COLON dc_c
+
+    SIMB_SEMI_COLON  shift, and go to state 45
+
+
+State 27
+
+   47 op_un: SIMB_MINUS .
+
+    $default  reduce using rule 47 (op_un)
+
+
+State 28
+
+   46 op_un: SIMB_PLUS .
+
+    $default  reduce using rule 46 (op_un)
+
+
+State 29
+
+   45 expressao: CHARACTER .
+
+    $default  reduce using rule 45 (expressao)
+
+
+State 30
+
+   36 cmd: IF condicao . THEN cmd pfalsa
+
+    THEN  shift, and go to state 46
+
+
+State 31
+
+   38 condicao: expressao . relacao expressao
+
+    SIMB_LESS           shift, and go to state 47
+    SIMB_GREATER        shift, and go to state 48
+    SIMB_DIF            shift, and go to state 49
+    SIMB_GREATER_EQUAL  shift, and go to state 50
+    SIMB_EQUAL          shift, and go to state 51
+
+    relacao  go to state 52
+
+
+State 32
+
+   53 termo: op_un . fator mais_fatores
+
+    error                 shift, and go to state 53
+    ID                    shift, and go to state 54
+    NUM_INTEGER           shift, and go to state 24
+    NUM_REAL              shift, and go to state 25
+    SIMB_OPEN_PARENTESIS  shift, and go to state 55
+
+    fator   go to state 56
+    numero  go to state 57
+
+
+State 33
+
+   44 expressao: termo . outros_termos
+
+    SIMB_MINUS  shift, and go to state 58
+    SIMB_PLUS   shift, and go to state 59
+
+    SIMB_MINUS  [reduce using rule 50 (outros_termos)]
+    SIMB_PLUS   [reduce using rule 50 (outros_termos)]
+    $default    reduce using rule 50 (outros_termos)
+
+    outros_termos  go to state 60
+    op_ad          go to state 61
+
+
+State 34
+
+   37 cmd: ID SIMB_ATRIBUTION . expressao
+
+    SIMB_MINUS  shift, and go to state 27
+    SIMB_PLUS   shift, and go to state 28
+    CHARACTER   shift, and go to state 29
+
+    $default  reduce using rule 48 (op_un)
+
+    expressao  go to state 62
+    op_un      go to state 32
+    termo      go to state 33
+
+
+State 35
+
+   24 lista_arg: SIMB_OPEN_PARENTESIS . argumentos SIMB_CLOSE_PARENTESIS
+
+    ID  shift, and go to state 63
+
+    argumentos  go to state 64
+
+
+State 36
+
+   35 cmd: ID lista_arg .
+
+    $default  reduce using rule 35 (cmd)
+
+
+State 37
+
+    2 corpo: dc SIMB_BEGIN comandos END .
+
+    $default  reduce using rule 2 (corpo)
+
+
+State 38
+
+   31 comandos: cmd SIMB_SEMI_COLON . comandos
+
+    IF  shift, and go to state 16
+    ID  shift, and go to state 17
+
+    $default  reduce using rule 32 (comandos)
+
+    comandos  go to state 65
+    cmd       go to state 19
+
+
+State 39
+
+   34 comandos: cmd SIMB_COMMA . comandos
+
+    IF  shift, and go to state 16
+    ID  shift, and go to state 17
+
+    $default  reduce using rule 32 (comandos)
+
+    comandos  go to state 66
+    cmd       go to state 19
+
+
+State 40
+
+   33 comandos: cmd comandos .
+
+    $default  reduce using rule 33 (comandos)
+
+
+State 41
+
+   12 mais_var: SIMB_COMMA . variaveis
+
+    ID  shift, and go to state 20
+
+    variaveis  go to state 67
+
+
+State 42
+
+   11 variaveis: ID mais_var .
+
+    $default  reduce using rule 11 (variaveis)
+
+
+State 43
+
+    6 dc_v: VAR variaveis SIMB_COLON . tipo_var SIMB_SEMI_COLON dc_v
+
+    INTEGER  shift, and go to state 68
+    REAL     shift, and go to state 69
+    CHAR     shift, and go to state 70
+
+    tipo_var  go to state 71
+
+
+State 44
+
+   14 dc_p: PROCEDURE ID . parametros SIMB_SEMI_COLON corpo_p dc_p
+
+    SIMB_OPEN_PARENTESIS  shift, and go to state 72
+
+    $default  reduce using rule 17 (parametros)
+
+    parametros  go to state 73
+
+
+State 45
+
+    4 dc_c: CONST ID SIMB_ATRIBUTION numero SIMB_SEMI_COLON . dc_c
+
+    CONST  shift, and go to state 6
+
+    $default  reduce using rule 5 (dc_c)
+
+    dc_c  go to state 74
+
+
+State 46
+
+   36 cmd: IF condicao THEN . cmd pfalsa
+
+    IF  shift, and go to state 16
+    ID  shift, and go to state 17
+
+    cmd  go to state 75
+
+
+State 47
+
+   42 relacao: SIMB_LESS .
+
+    $default  reduce using rule 42 (relacao)
+
+
+State 48
+
+   40 relacao: SIMB_GREATER .
+
+    $default  reduce using rule 40 (relacao)
+
+
+State 49
+
+   41 relacao: SIMB_DIF .
+
+    $default  reduce using rule 41 (relacao)
+
+
+State 50
+
+   43 relacao: SIMB_GREATER_EQUAL .
+
+    $default  reduce using rule 43 (relacao)
+
+
+State 51
+
+   39 relacao: SIMB_EQUAL .
+
+    $default  reduce using rule 39 (relacao)
+
+
+State 52
+
+   38 condicao: expressao relacao . expressao
+
+    SIMB_MINUS  shift, and go to state 27
+    SIMB_PLUS   shift, and go to state 28
+    CHARACTER   shift, and go to state 29
+
+    $default  reduce using rule 48 (op_un)
+
+    expressao  go to state 76
+    op_un      go to state 32
+    termo      go to state 33
+
+
+State 53
+
+   61 fator: error . SIMB_OPEN_PARENTESIS expressao
+
+    SIMB_OPEN_PARENTESIS  shift, and go to state 77
+
+
+State 54
+
+   58 fator: ID .
+
+    $default  reduce using rule 58 (fator)
+
+
+State 55
+
+   60 fator: SIMB_OPEN_PARENTESIS . expressao SIMB_CLOSE_PARENTESIS
+
+    SIMB_MINUS  shift, and go to state 27
+    SIMB_PLUS   shift, and go to state 28
+    CHARACTER   shift, and go to state 29
+
+    $default  reduce using rule 48 (op_un)
+
+    expressao  go to state 78
+    op_un      go to state 32
+    termo      go to state 33
+
+
+State 56
+
+   53 termo: op_un fator . mais_fatores
+
+    SIMB_MUL  shift, and go to state 79
+    SIMB_DIV  shift, and go to state 80
+
+    SIMB_MUL  [reduce using rule 55 (mais_fatores)]
+    SIMB_DIV  [reduce using rule 55 (mais_fatores)]
+    $default  reduce using rule 55 (mais_fatores)
+
+    mais_fatores  go to state 81
+    op_mul        go to state 82
+
+
+State 57
+
+   59 fator: numero .
+
+    $default  reduce using rule 59 (fator)
+
+
+State 58
+
+   52 op_ad: SIMB_MINUS .
+
+    $default  reduce using rule 52 (op_ad)
+
+
+State 59
+
+   51 op_ad: SIMB_PLUS .
+
+    $default  reduce using rule 51 (op_ad)
+
+
+State 60
+
+   44 expressao: termo outros_termos .
+
+    $default  reduce using rule 44 (expressao)
+
+
+State 61
+
+   49 outros_termos: op_ad . termo outros_termos
+
+    SIMB_MINUS  shift, and go to state 27
+    SIMB_PLUS   shift, and go to state 28
+
+    $default  reduce using rule 48 (op_un)
+
+    op_un  go to state 32
+    termo  go to state 83
+
+
+State 62
+
+   37 cmd: ID SIMB_ATRIBUTION expressao .
+
+    $default  reduce using rule 37 (cmd)
+
+
+State 63
+
+   26 argumentos: ID . mais_id
+
+    SIMB_SEMI_COLON  shift, and go to state 84
+
+    $default  reduce using rule 28 (mais_id)
+
+    mais_id  go to state 85
+
+
+State 64
+
+   24 lista_arg: SIMB_OPEN_PARENTESIS argumentos . SIMB_CLOSE_PARENTESIS
+
+    SIMB_CLOSE_PARENTESIS  shift, and go to state 86
+
+
+State 65
+
+   31 comandos: cmd SIMB_SEMI_COLON comandos .
+
+    $default  reduce using rule 31 (comandos)
+
+
+State 66
+
+   34 comandos: cmd SIMB_COMMA comandos .
+
+    $default  reduce using rule 34 (comandos)
+
+
+State 67
+
+   12 mais_var: SIMB_COMMA variaveis .
+
+    $default  reduce using rule 12 (mais_var)
+
+
+State 68
+
+    9 tipo_var: INTEGER .
+
+    $default  reduce using rule 9 (tipo_var)
+
+
+State 69
+
+    8 tipo_var: REAL .
+
+    $default  reduce using rule 8 (tipo_var)
+
+
+State 70
+
+   10 tipo_var: CHAR .
+
+    $default  reduce using rule 10 (tipo_var)
+
+
+State 71
+
+    6 dc_v: VAR variaveis SIMB_COLON tipo_var . SIMB_SEMI_COLON dc_v
+
+    SIMB_SEMI_COLON  shift, and go to state 87
+
+
+State 72
+
+   16 parametros: SIMB_OPEN_PARENTESIS . lista_par SIMB_CLOSE_PARENTESIS
+
+    ID  shift, and go to state 20
+
+    variaveis  go to state 88
+    lista_par  go to state 89
+
+
+State 73
+
+   14 dc_p: PROCEDURE ID parametros . SIMB_SEMI_COLON corpo_p dc_p
+
+    SIMB_SEMI_COLON  shift, and go to state 90
+
+
+State 74
+
+    4 dc_c: CONST ID SIMB_ATRIBUTION numero SIMB_SEMI_COLON dc_c .
+
+    $default  reduce using rule 4 (dc_c)
+
+
+State 75
+
+   36 cmd: IF condicao THEN cmd . pfalsa
+
+    ELSE  shift, and go to state 91
+
+    ELSE      [reduce using rule 30 (pfalsa)]
+    $default  reduce using rule 30 (pfalsa)
+
+    pfalsa  go to state 92
+
+
+State 76
+
+   38 condicao: expressao relacao expressao .
+
+    $default  reduce using rule 38 (condicao)
+
+
+State 77
+
+   61 fator: error SIMB_OPEN_PARENTESIS . expressao
+
+    SIMB_MINUS  shift, and go to state 27
+    SIMB_PLUS   shift, and go to state 28
+    CHARACTER   shift, and go to state 29
+
+    $default  reduce using rule 48 (op_un)
+
+    expressao  go to state 93
+    op_un      go to state 32
+    termo      go to state 33
+
+
+State 78
+
+   60 fator: SIMB_OPEN_PARENTESIS expressao . SIMB_CLOSE_PARENTESIS
+
+    SIMB_CLOSE_PARENTESIS  shift, and go to state 94
+
+
+State 79
+
+   56 op_mul: SIMB_MUL .
+
+    $default  reduce using rule 56 (op_mul)
+
+
+State 80
+
+   57 op_mul: SIMB_DIV .
+
+    $default  reduce using rule 57 (op_mul)
+
+
+State 81
+
+   53 termo: op_un fator mais_fatores .
+
+    $default  reduce using rule 53 (termo)
+
+
+State 82
+
+   54 mais_fatores: op_mul . fator mais_fatores
+
+    error                 shift, and go to state 53
+    ID                    shift, and go to state 54
+    NUM_INTEGER           shift, and go to state 24
+    NUM_REAL              shift, and go to state 25
+    SIMB_OPEN_PARENTESIS  shift, and go to state 55
+
+    fator   go to state 95
+    numero  go to state 57
+
+
+State 83
+
+   49 outros_termos: op_ad termo . outros_termos
+
+    SIMB_MINUS  shift, and go to state 58
+    SIMB_PLUS   shift, and go to state 59
+
+    SIMB_MINUS  [reduce using rule 50 (outros_termos)]
+    SIMB_PLUS   [reduce using rule 50 (outros_termos)]
+    $default    reduce using rule 50 (outros_termos)
+
+    outros_termos  go to state 96
+    op_ad          go to state 61
+
+
+State 84
+
+   27 mais_id: SIMB_SEMI_COLON . argumentos
+
+    ID  shift, and go to state 63
+
+    argumentos  go to state 97
+
+
+State 85
+
+   26 argumentos: ID mais_id .
+
+    $default  reduce using rule 26 (argumentos)
+
+
+State 86
+
+   24 lista_arg: SIMB_OPEN_PARENTESIS argumentos SIMB_CLOSE_PARENTESIS .
+
+    $default  reduce using rule 24 (lista_arg)
+
+
+State 87
+
+    6 dc_v: VAR variaveis SIMB_COLON tipo_var SIMB_SEMI_COLON . dc_v
+
+    VAR  shift, and go to state 13
+
+    $default  reduce using rule 7 (dc_v)
+
+    dc_v  go to state 98
+
+
+State 88
+
+   18 lista_par: variaveis . SIMB_COLON tipo_var mais_par
+
+    SIMB_COLON  shift, and go to state 99
+
+
+State 89
+
+   16 parametros: SIMB_OPEN_PARENTESIS lista_par . SIMB_CLOSE_PARENTESIS
+
+    SIMB_CLOSE_PARENTESIS  shift, and go to state 100
+
+
+State 90
+
+   14 dc_p: PROCEDURE ID parametros SIMB_SEMI_COLON . corpo_p dc_p
+
+    VAR  shift, and go to state 13
+
+    $default  reduce using rule 7 (dc_v)
+
+    dc_v     go to state 101
+    corpo_p  go to state 102
+    dc_loc   go to state 103
+
+
+State 91
+
+   29 pfalsa: ELSE . cmd
+
+    IF  shift, and go to state 16
+    ID  shift, and go to state 17
+
+    cmd  go to state 104
+
+
+State 92
+
+   36 cmd: IF condicao THEN cmd pfalsa .
+
+    $default  reduce using rule 36 (cmd)
+
+
+State 93
+
+   61 fator: error SIMB_OPEN_PARENTESIS expressao .
+
+    $default  reduce using rule 61 (fator)
+
+
+State 94
+
+   60 fator: SIMB_OPEN_PARENTESIS expressao SIMB_CLOSE_PARENTESIS .
+
+    $default  reduce using rule 60 (fator)
+
+
+State 95
+
+   54 mais_fatores: op_mul fator . mais_fatores
+
+    SIMB_MUL  shift, and go to state 79
+    SIMB_DIV  shift, and go to state 80
+
+    SIMB_MUL  [reduce using rule 55 (mais_fatores)]
+    SIMB_DIV  [reduce using rule 55 (mais_fatores)]
+    $default  reduce using rule 55 (mais_fatores)
+
+    mais_fatores  go to state 105
+    op_mul        go to state 82
+
+
+State 96
+
+   49 outros_termos: op_ad termo outros_termos .
+
+    $default  reduce using rule 49 (outros_termos)
+
+
+State 97
+
+   27 mais_id: SIMB_SEMI_COLON argumentos .
+
+    $default  reduce using rule 27 (mais_id)
+
+
+State 98
+
+    6 dc_v: VAR variaveis SIMB_COLON tipo_var SIMB_SEMI_COLON dc_v .
+
+    $default  reduce using rule 6 (dc_v)
+
+
+State 99
+
+   18 lista_par: variaveis SIMB_COLON . tipo_var mais_par
+
+    INTEGER  shift, and go to state 68
+    REAL     shift, and go to state 69
+    CHAR     shift, and go to state 70
+
+    tipo_var  go to state 106
+
+
+State 100
+
+   16 parametros: SIMB_OPEN_PARENTESIS lista_par SIMB_CLOSE_PARENTESIS .
+
+    $default  reduce using rule 16 (parametros)
+
+
+State 101
+
+   23 dc_loc: dc_v .
+
+    $default  reduce using rule 23 (dc_loc)
+
+
+State 102
+
+   14 dc_p: PROCEDURE ID parametros SIMB_SEMI_COLON corpo_p . dc_p
+
+    PROCEDURE  shift, and go to state 22
+
+    $default  reduce using rule 15 (dc_p)
+
+    dc_p  go to state 107
+
+
+State 103
+
+   22 corpo_p: dc_loc . SIMB_BEGIN comandos END SIMB_SEMI_COLON
+
+    SIMB_BEGIN  shift, and go to state 108
+
+
+State 104
+
+   29 pfalsa: ELSE cmd .
+
+    $default  reduce using rule 29 (pfalsa)
+
+
+State 105
+
+   54 mais_fatores: op_mul fator mais_fatores .
+
+    $default  reduce using rule 54 (mais_fatores)
+
+
+State 106
+
+   18 lista_par: variaveis SIMB_COLON tipo_var . mais_par
+
+    SIMB_SEMI_COLON  shift, and go to state 109
+    SIMB_COMMA       shift, and go to state 110
+
+    $default  reduce using rule 20 (mais_par)
+
+    mais_par  go to state 111
+
+
+State 107
+
+   14 dc_p: PROCEDURE ID parametros SIMB_SEMI_COLON corpo_p dc_p .
+
+    $default  reduce using rule 14 (dc_p)
+
+
+State 108
+
+   22 corpo_p: dc_loc SIMB_BEGIN . comandos END SIMB_SEMI_COLON
+
+    IF  shift, and go to state 16
+    ID  shift, and go to state 17
+
+    $default  reduce using rule 32 (comandos)
+
+    comandos  go to state 112
+    cmd       go to state 19
+
+
+State 109
+
+   19 mais_par: SIMB_SEMI_COLON . lista_par
+
+    ID  shift, and go to state 20
+
+    variaveis  go to state 88
+    lista_par  go to state 113
+
+
+State 110
+
+   21 mais_par: SIMB_COMMA . lista_par
+
+    ID  shift, and go to state 20
+
+    variaveis  go to state 88
+    lista_par  go to state 114
+
+
+State 111
+
+   18 lista_par: variaveis SIMB_COLON tipo_var mais_par .
+
+    $default  reduce using rule 18 (lista_par)
+
+
+State 112
+
+   22 corpo_p: dc_loc SIMB_BEGIN comandos . END SIMB_SEMI_COLON
+
+    END  shift, and go to state 115
+
+
+State 113
+
+   19 mais_par: SIMB_SEMI_COLON lista_par .
+
+    $default  reduce using rule 19 (mais_par)
+
+
+State 114
+
+   21 mais_par: SIMB_COMMA lista_par .
+
+    $default  reduce using rule 21 (mais_par)
+
+
+State 115
+
+   22 corpo_p: dc_loc SIMB_BEGIN comandos END . SIMB_SEMI_COLON
+
+    SIMB_SEMI_COLON  shift, and go to state 116
+
+
+State 116
+
+   22 corpo_p: dc_loc SIMB_BEGIN comandos END SIMB_SEMI_COLON .
+
+    $default  reduce using rule 22 (corpo_p)
