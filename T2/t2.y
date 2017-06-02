@@ -55,13 +55,13 @@
 
 %%
 
-programa: PROGRAM ID SIMB_SEMI_COLON corpo SIMB_DOT {printf("programa\n") ;return 0;}
+programa: PROGRAM ID SIMB_SEMI_COLON corpo SIMB_DOT {return 0;}
 			|PROGRAM ID SIMB_SEMI_COLON corpo  {printf("Linha %d: Erro Sintático: Esperado ponto final.\n", nlines);} ; 
 
-corpo:	dc SIMB_BEGIN comandos END {printf("corpo\n") ;} 
+corpo:	dc SIMB_BEGIN comandos END
 		| dc SIMB_BEGIN comandos {printf("Linha %d: Erro Sintático: Esperado END.\n", nlines);};
 
-dc:	dc_c dc_v dc_p {printf("dc\n") ;};
+dc:	dc_c dc_v dc_p
 
 dc_c: CONST ID SIMB_EQUAL numero SIMB_SEMI_COLON dc_c
 	  | 
@@ -98,23 +98,23 @@ corpo_p:	dc_loc SIMB_BEGIN comandos END SIMB_SEMI_COLON ;
 
 dc_loc:		dc_v ;
 
-lista_arg:	SIMB_OPEN_PARENTESIS argumentos SIMB_CLOSE_PARENTESIS {printf("lista\n") ;}
+lista_arg:	SIMB_OPEN_PARENTESIS argumentos SIMB_CLOSE_PARENTESIS
 			| ;
 
-argumentos:	ID mais_id {printf("arg\n") ;};
+argumentos:	ID mais_id;
 
-mais_id:	SIMB_SEMI_COLON argumentos {printf("+\n") ;}
+mais_id:	SIMB_SEMI_COLON argumentos
 			| ;
 
 pfalsa:		ELSE cmd 
 			| ;
 
-comandos:	cmd SIMB_SEMI_COLON comandos {printf("comandos\n") ;}
+comandos:	cmd SIMB_SEMI_COLON comandos
 			|
 			| cmd comandos {printf("Linha %d: Erro Sintático: Esperado ponto e vígula \";\".\n", nlines); }
 			| cmd SIMB_COMMA comandos {printf("Linha %d: Erro Sintático: Esperado ponto e vígula \";\".\n", nlines); };
 
-cmd:		ID lista_arg {printf("ID lista\n") ;}
+cmd:		ID lista_arg
 			| IF condicao THEN cmd pfalsa
 			| ID SIMB_ATRIBUTION expressao 
 			| ID SIMB_ATRIBUTION CHARACTER 
