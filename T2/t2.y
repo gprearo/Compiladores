@@ -61,7 +61,7 @@ programa: PROGRAM ID SIMB_SEMI_COLON corpo SIMB_DOT {return 0;}
 corpo:	dc SIMB_BEGIN comandos END
 		| dc SIMB_BEGIN comandos {printf("Linha %d: Erro Sintático: Esperado END.\n", nlines);};
 
-dc:	dc_c dc_v dc_p
+dc:	dc_c dc_v dc_p;
 
 dc_c: CONST ID SIMB_EQUAL numero SIMB_SEMI_COLON dc_c
 	  | 
